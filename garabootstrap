@@ -142,6 +142,7 @@ def main(argv):
     install_base_packages(options.without_query_yes_no)
     git_clone_package(args[0], options.without_query_yes_no,
                       options.clone_as_developer)
+    print 'bootstrap phase is done, you need to run garainstall after this!'
     
 main(sys.argv)
 
