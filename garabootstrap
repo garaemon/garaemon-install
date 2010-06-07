@@ -94,19 +94,35 @@ def install_base_packages(without_y_or_n_p):
         if arch == "Ubuntu":
             apt_base_packages(without_y_or_n_p)
         elif arch == "darwin":
+            try:
                 port_base_packages(without_y_or_n_p)
+            except:
+                print 'did you install macports?'
         else:
             raise
     except:
         print "installing basic package is failed!"
 
+
 def git_clone_package(path, without_y_or_n_p, developerp):
-    if not os.path.exists(path):
-        os.mkdir(path)
     if developerp:
-        git_clone_package_as_developer(path, without_y_or_n_p)
+        git_url = 'git://github.com/garaemon/garaemon-install.git'
     else:
-        git_clone_package_as_user(path, without_y_or_n_p)
+        # check ssh directory
+        if not os.path.exists(os.environ['HOME'] + '/.ssh/id_rsa'):
+            print 'You need to setup ssh rsa key in your ~/.ssh'
+            exit(2)
+        git_url = 'git@github.com:garaemon/garaemon-install.git'
+    if os.path.exists(path):
+        prev_cd = os.getcwd()
+        os.chdir(path)
+        git_command = ['git', 'pull']
+        subprocess.check_call(git_command)
+        os.chdir(prev_cd)
+    else:
+        git_command = ['git', 'clone', git_url, path]
+        subprocess.check_call(git_command)
+        
 
 def main(argv):
     if len(argv) < 2:
@@ -124,7 +140,7 @@ def main(argv):
                       action = "store_true")
     (options, args) = parser.parse_args(args)
     install_base_packages(options.without_query_yes_no)
-    git_clone_package(argv[0], options.without_query_yes_no,
+    git_clone_package(args[0], options.without_query_yes_no,
                       options.clone_as_developer)
     
 main(sys.argv)
