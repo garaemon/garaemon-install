@@ -21,7 +21,7 @@ import os
 import sys
 import subprocess
 
-packages = {'darwin': [],
+packages = {'darwin': ['py-yaml', 'py25-yaml', 'py26-yaml', 'git-core'],
             'Ubuntu': ['git-core', 'python-yaml']}
 
 # query_yes_no is copied
@@ -88,7 +88,6 @@ def port_base_packages(without_y_or_n_p):
     command.extend(port_packages)
     subprocess.check_call(command)
     
-    
 def install_base_packages(without_y_or_n_p):
     try:
         arch = detect_os()
@@ -124,10 +123,9 @@ def main(argv):
                       help = "clone garaemon-install repository as committer",
                       action = "store_true")
     (options, args) = parser.parse_args(args)
-    apt_base_packages(options.without_query_yes_no)
+    install_base_packages(options.without_query_yes_no)
     git_clone_package(argv[0], options.without_query_yes_no,
                       options.clone_as_developer)
-    
     
 main(sys.argv)
 
