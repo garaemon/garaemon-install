@@ -3,4 +3,9 @@
       clisp
     darwin:
       clisp
+- git:
+    Ubuntu:
+      git-core
+    darwin:
+      git-core
 
