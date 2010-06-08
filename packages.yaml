@@ -1,0 +1,6 @@
+- clisp:
+    Ubuntu:
+      clisp
+    darwin:
+      clisp
+

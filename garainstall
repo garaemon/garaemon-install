@@ -3,14 +3,28 @@
 
 """
 usage: garainstall [OPTIONS] root-path
+Options:
+ --yes|-y (without invokating yes or no questions)
+ --developer|-d (clone the repository as a developer. proper ssh
+                 key is required)
+ --without-install-packages (does not install any packages with apt or port)
+ --without-clone-git (does not clone any git repository of garaemon)
+ --without-sbcl (does not compile sbcl)
+ --package-yaml=YAML_FILE (specify yaml file written the packages to be installed.
+                           in default, packages.yaml is used.)
 """
 from optparse import OptionParser, OptionValueError
 import os
 import sys
 import subprocess
+import yaml                     # installed by garabootstrap
 
 def detect_os():
-    """ only supports darwin and ubuntu"""
+    """
+    only supports darwin and ubuntu.
+    returns a string stands for architecture.
+    If you use not supported OS, it raise an exception.
+    """
     if os.path.exists("/usr/bin/sw_vers"):
         return "darwin"
     elif os.path.exists("/usr/bin/lsb_release"):
@@ -18,5 +32,96 @@ def detect_os():
     else:
         raise
 
-def main(argv):
+def usage():
+    """
+    print usage
+    """
+    print __doc__ % vars()
+
+def setup_parser(parser):
+    """
+    setup parse option, these add_options must be according to documentation of
+    this script.
+    """
+    parser.add_option("-y", "--yes", dest = "without_query_yes_no",
+                      default = False,
+                      help = "without query yes or no in aptitude (and port)",
+                      action = "store_true")
+    parser.add_option("-d", "--developer", dest = "clone_as_developer",
+                      default = False,
+                      help = "clone garaemon-install repository as committer",
+                      action = "store_true")
+    parser.add_option("--without-install-packages",
+                      dest = "without_install_packages",
+                      default = False,
+                      help = "does not install any packages with apt or port",
+                      action = "store_true")
+    parser.add_option("--without-sbcl",
+                      dest = "without_sbcl",
+                      default = False,
+                      help = "does not compile sbcl",
+                      action = "store_true")
+    parser.add_option("--without-clone-git",
+                      dest = "without_clone_git",
+                      default = False,
+                      help = "does not clone github repository of garaemon",
+                      action = "store_true")
+    parser.add_option("--package-yaml",
+                      dest = "package_yaml",
+                      default = "packages.yaml",
+                      help = "does not clone github repository of garaemon",
+                      action = "store")
+    return parser
+
+
+def extract_packages(yaml_file, arch):
+    """
+    returns the packages according to arch from yaml_file.
+    """
+    packages = yaml.load(open(yaml_file).read())
+    arch_packages = map(lambda p: p[p.keys()[0]][arch], packages)
+                        
+                        
+    print "installing %s" % arch_packages
+    return arch_packages
     
+def install_packages(without_query_yes_no, package_yaml):
+    """
+    install some packages specified by package_yaml.
+    if without_query_yes_no is True, run the install command with -y option.
+    """
+    arch = detect_os()
+    if arch == "Ubuntu":
+        apt_command = "aptitude"
+    elif arch == "darwin":
+        apt_command = "port"
+    commands = ["sudo", apt_command, "install"]
+    if without_query_yes_no:
+        commands.append("-y")
+    commands.extend(extract_packages(package_yaml, arch))
+    subprocess.check_call(commands)
+    
+    
+def main(argv):
+    """
+    main function.
+    """
+    if len(argv) < 2:
+        usage()
+        exit(1)                         # return false
+    # argv[0] = garainstall
+    args = argv[1:]
+    # parse setup
+    parser = OptionParser()
+    setup_parser(parser)
+    (options, args) = parser.parse_args(args)
+    root_path = args[0]
+    if not options.without_install_packages:
+        install_packages(options.without_query_yes_no, options.package_yaml)
+    if not options.without_clone_git:
+        clone_github_repos(root_path, options.clone_as_developer)
+    if not options.without_sbcl:
+        compile_and_install_sbcl(root_path)
+
+main(sys.argv)
+
