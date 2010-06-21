@@ -113,6 +113,7 @@ def git_clone_package(path, without_y_or_n_p, developerp):
             print 'You need to setup ssh rsa key in your ~/.ssh'
             exit(2)
         git_url = 'git@github.com:garaemon/garaemon-install.git'
+    path = os.path.join(path, 'garaemon-install')
     if os.path.exists(path):
         prev_cd = os.getcwd()
         os.chdir(path)

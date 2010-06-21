@@ -1,0 +1,3 @@
+- repository:
+   name: emacs-settings
+   location: garaemon/emacs-settings.git

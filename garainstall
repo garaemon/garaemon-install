@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #-*- mode: python -*-
+#-*- coding: utf-8 -*-
 
 """
 usage: garainstall [OPTIONS] root-path
@@ -9,15 +10,23 @@ Options:
                  key is required)
  --without-install-packages (does not install any packages with apt or port)
  --without-clone-git (does not clone any git repository of garaemon)
+ --github-yaml=YAML_FILE (specify yaml file written the repositories to
+                          be cloned from github.com. in default,
+                          github.yaml is used)
  --without-sbcl (does not compile sbcl)
- --package-yaml=YAML_FILE (specify yaml file written the packages to be installed.
-                           in default, packages.yaml is used.)
+ --package-yaml=YAML_FILE (specify yaml file written the packages to be
+                           installed. in default, packages.yaml is used.)
+ 
 """
 from optparse import OptionParser, OptionValueError
 import os
 import sys
+import codecs
 import subprocess
 import yaml                     # installed by garabootstrap
+
+sys.stdout = codecs.getwriter('utf_8')(sys.stdout)
+sys.stdin = codecs.getreader('utf_8')(sys.stdin)
 
 def detect_os():
     """
@@ -69,7 +78,14 @@ def setup_parser(parser):
     parser.add_option("--package-yaml",
                       dest = "package_yaml",
                       default = "packages.yaml",
-                      help = "does not clone github repository of garaemon",
+                      help = """specify yaml file the package to be installed
+                      is written""",
+                      action = "store")
+    parser.add_option("--github-yaml",
+                      dest = "github_yaml",
+                      default = "github.yaml",
+                      help = """specify yaml file the package to be cloned
+                      is written""",
                       action = "store")
     return parser
 
@@ -80,7 +96,6 @@ def extract_packages(yaml_file, arch):
     """
     packages = yaml.load(open(yaml_file).read())
     arch_packages = map(lambda p: p[p.keys()[0]][arch], packages)
-                        
                         
     print "installing %s" % arch_packages
     return arch_packages
@@ -101,7 +116,26 @@ def install_packages(without_query_yes_no, package_yaml):
     commands.extend(extract_packages(package_yaml, arch))
     subprocess.check_call(commands)
     
-    
+def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
+    repos = yaml.load(open(yaml_file).read())
+    for repo in repos:
+        name = repo['repository']['name']
+        location = repo['repository']['location']
+        if clone_as_developer_p:
+            uri = 'git@github.com:' + location
+        else:
+            uri = 'git://github.com/' + location
+        repo_path = os.path.join(root_path, name)
+        if os.path.exists(repo_path):
+            prev_cd = os.getcwd()
+            os.chdir(repo_path)
+            git_command = ['git', 'pull']
+            subprocess.check_call(git_command)
+            os.chdir(prev_cd)
+        else:
+            git_command = ['git', 'clone', uri, repo_path]
+            subprocess.check_call(git_command)
+
 def main(argv):
     """
     main function.
@@ -115,11 +149,12 @@ def main(argv):
     parser = OptionParser()
     setup_parser(parser)
     (options, args) = parser.parse_args(args)
-    root_path = args[0]
+    root_path = os.path.abspath(args[0])
     if not options.without_install_packages:
         install_packages(options.without_query_yes_no, options.package_yaml)
     if not options.without_clone_git:
-        clone_github_repos(root_path, options.clone_as_developer)
+        clone_github_repos(root_path, options.github_yaml,
+                           options.clone_as_developer)
     if not options.without_sbcl:
         compile_and_install_sbcl(root_path)
 
