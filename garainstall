@@ -21,6 +21,7 @@ Options:
 from optparse import OptionParser, OptionValueError
 import os
 import sys
+import shutil
 import codecs
 import subprocess
 import yaml                     # installed by garabootstrap
@@ -161,6 +162,13 @@ def compile_and_install_sbcl(root_path):
         cvs_update_command = ["cvs", "up"]
         subprocess.check_call(cvs_update_command)
     # copy extention files...
+    sbcl_customize_feature = "customize-target-features.lisp"
+    if not os.path.exists(os.path.join(sbcl_path, sbcl_customize_feature)):
+        # copy
+        from_path = os.path.abspath(os.path.join(__file__,
+                                                 sbcl_customize_feature))
+        shutil.copyfile(from_path, sbcl_path)
+    # generate sbclcompr
     
     # build
     # install
