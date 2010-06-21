@@ -96,15 +96,11 @@ def extract_packages(yaml_file, arch):
     """
     packages = yaml.load(open(yaml_file).read())
     arch_packages = map(lambda p: p[p.keys()[0]][arch], packages)
-                        
+    
     print "installing %s" % arch_packages
     return arch_packages
-    
-def install_packages(without_query_yes_no, package_yaml):
-    """
-    install some packages specified by package_yaml.
-    if without_query_yes_no is True, run the install command with -y option.
-    """
+
+def install_packages(without_query_yes_no, packages):
     arch = detect_os()
     if arch == "Ubuntu":
         apt_command = "aptitude"
@@ -113,8 +109,16 @@ def install_packages(without_query_yes_no, package_yaml):
     commands = ["sudo", apt_command, "install"]
     if without_query_yes_no:
         commands.append("-y")
-    commands.extend(extract_packages(package_yaml, arch))
+    commands.extend(packages)
     subprocess.check_call(commands)
+    
+def install_packages_from_yaml(without_query_yes_no, package_yaml):
+    """
+    install some packages specified by package_yaml.
+    if without_query_yes_no is True, run the install command with -y option.
+    """
+    arch = detect_os()
+    install_packages(without_query_yes_no, extract_packages(package_yaml, arch))
     
 def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
     repos = yaml.load(open(yaml_file).read())
@@ -136,6 +140,32 @@ def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
             git_command = ['git', 'clone', uri, repo_path]
             subprocess.check_call(git_command)
 
+def compile_and_install_sbcl(root_path):
+    sbcl_path = os.path.join(root_path, "sbcl")
+    # first of all, install binary sbcl
+    try:
+        check_sbcl = ['sbcl', '--version']
+        subprocess.check_call(check_sbcl)
+    except:
+        # install sbcl
+        install_packages(True, ["sbcl"])
+    # checking out
+    sbcl_url = "-d:pserver:anonymous@sbcl.cvs.sourceforge.net:/cvsroot/sbcl"
+    if not os.path.exists(sbcl_path):
+        cvs_login_command = ["cvs", sbcl_url, "login"]
+        cvs_co_command = ["cvs", "-z3", sbcl_url, "co", "-P", sbcl_path]
+        subprocess.check_call(cvs_login_command)
+        subprocess.check_call(cvs_co_command)
+    else:
+        os.chdir(sbcl_path)
+        cvs_update_command = ["cvs", "up"]
+        subprocess.check_call(cvs_update_command)
+    # copy extention files...
+    
+    # build
+    # install
+    # remove sbcl if sbcl is installed by the package system
+
 def main(argv):
     """
     main function.
@@ -151,7 +181,8 @@ def main(argv):
     (options, args) = parser.parse_args(args)
     root_path = os.path.abspath(args[0])
     if not options.without_install_packages:
-        install_packages(options.without_query_yes_no, options.package_yaml)
+        install_packages_from_yaml(options.without_query_yes_no,
+                                   options.package_yaml)
     if not options.without_clone_git:
         clone_github_repos(root_path, options.github_yaml,
                            options.clone_as_developer)
