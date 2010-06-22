@@ -178,11 +178,12 @@ def compile_and_install_sbcl(root_path):
         from_path = os.path.abspath(os.path.join(pwd,
                                                  sbcl_compr))
         shutil.copyfile(from_path, os.path.join(sbcl_path, sbcl_compr))
+        shutil.copymode(from_path, os.path.join(sbcl_path, sbcl_compr))
     # build
     os.chdir(sbcl_path)
-    subprocess.check_call(["sh", "make.sh", "\"./sbclcompr\""])
+    subprocess.check_call(["sh", "./make.sh"])
     # install
-    subprocess.check_call(["sudo", "sh", "install.sh"])
+    subprocess.check_call(["sudo", "sh", "./install.sh"])
     # remove sbcl if sbcl is installed by the package system
 
 def main(argv):
