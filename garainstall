@@ -28,6 +28,7 @@ import yaml                     # installed by garabootstrap
 
 sys.stdout = codecs.getwriter('utf_8')(sys.stdout)
 sys.stdin = codecs.getreader('utf_8')(sys.stdin)
+pwd = os.path.dirname(os.path.abspath(__file__))
 
 def detect_os():
     """
@@ -98,7 +99,7 @@ def extract_packages(yaml_file, arch):
     packages = yaml.load(open(yaml_file).read())
     arch_packages = map(lambda p: p[p.keys()[0]][arch], packages)
     
-    print "installing %s" % arch_packages
+    print ">> installing %s" % arch_packages
     return arch_packages
 
 def install_packages(without_query_yes_no, packages):
@@ -123,6 +124,7 @@ def install_packages_from_yaml(without_query_yes_no, package_yaml):
     
 def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
     repos = yaml.load(open(yaml_file).read())
+    print ">> cloning %s" % [r['repository']['name'] for r in repos]
     for repo in repos:
         name = repo['repository']['name']
         location = repo['repository']['location']
@@ -142,6 +144,7 @@ def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
             subprocess.check_call(git_command)
 
 def compile_and_install_sbcl(root_path):
+    print ">> installing sbcl"
     sbcl_path = os.path.join(root_path, "sbcl")
     # first of all, install binary sbcl
     try:
@@ -165,13 +168,21 @@ def compile_and_install_sbcl(root_path):
     sbcl_customize_feature = "customize-target-features.lisp"
     if not os.path.exists(os.path.join(sbcl_path, sbcl_customize_feature)):
         # copy
-        from_path = os.path.abspath(os.path.join(__file__,
+        from_path = os.path.abspath(os.path.join(pwd,
                                                  sbcl_customize_feature))
-        shutil.copyfile(from_path, sbcl_path)
-    # generate sbclcompr
-    
+        shutil.copyfile(from_path,
+                        os.path.join(sbcl_path, sbcl_customize_feature))
+    sbcl_compr = "sbclcompr"
+    if not os.path.exists(os.path.join(sbcl_path, sbcl_compr)):
+        # copy
+        from_path = os.path.abspath(os.path.join(pwd,
+                                                 sbcl_compr))
+        shutil.copyfile(from_path, os.path.join(sbcl_path, sbcl_compr))
     # build
+    os.chdir(sbcl_path)
+    subprocess.check_call(["sh", "make.sh", "\"./sbclcompr\""])
     # install
+    subprocess.check_call(["sudo", "sh", "install.sh"])
     # remove sbcl if sbcl is installed by the package system
 
 def main(argv):
