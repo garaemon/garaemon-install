@@ -172,13 +172,6 @@ def compile_and_install_sbcl(root_path):
                                                  sbcl_customize_feature))
         shutil.copyfile(from_path,
                         os.path.join(sbcl_path, sbcl_customize_feature))
-    sbcl_compr = "sbclcompr"
-    if not os.path.exists(os.path.join(sbcl_path, sbcl_compr)):
-        # copy
-        from_path = os.path.abspath(os.path.join(pwd,
-                                                 sbcl_compr))
-        shutil.copyfile(from_path, os.path.join(sbcl_path, sbcl_compr))
-        shutil.copymode(from_path, os.path.join(sbcl_path, sbcl_compr))
     # build
     os.chdir(sbcl_path)
     subprocess.check_call(["sh", "./make.sh"])
