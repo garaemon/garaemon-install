@@ -8,4 +8,14 @@
       git-core
     darwin:
       git-core
-
+- opencv:
+    Ubuntu:
+      libcv-dev
+    darwin:
+      OpenCV
+- python-opencv:
+    Ubuntu:
+      python-opencv
+    darwin:
+      python-opencv #??
+      
