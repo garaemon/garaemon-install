@@ -14,6 +14,7 @@ Options:
                           be cloned from github.com. in default,
                           github.yaml is used)
  --without-sbcl (does not compile sbcl)
+ --without-emacs-settings (does not run emacs-settings)
  --package-yaml=YAML_FILE (specify yaml file written the packages to be
                            installed. in default, packages.yaml is used.)
  
@@ -76,6 +77,11 @@ def setup_parser(parser):
                       dest = "without_clone_git",
                       default = False,
                       help = "does not clone github repository of garaemon",
+                      action = "store_true")
+    parser.add_option("--without-emacs-settings",
+                      dest = "without_emacs_settings",
+                      default = False,
+                      help = "does not run emacs-settings",
                       action = "store_true")
     parser.add_option("--package-yaml",
                       dest = "package_yaml",
@@ -156,8 +162,9 @@ def compile_and_install_sbcl(root_path):
     # checking out
     sbcl_url = "-d:pserver:anonymous@sbcl.cvs.sourceforge.net:/cvsroot/sbcl"
     if not os.path.exists(sbcl_path):
+        os.chdir(root_path)
         cvs_login_command = ["cvs", sbcl_url, "login"]
-        cvs_co_command = ["cvs", "-z3", sbcl_url, "co", "-P", sbcl_path]
+        cvs_co_command = ["cvs", "-z3", sbcl_url, "co", "-P", "sbcl"]
         subprocess.check_call(cvs_login_command)
         subprocess.check_call(cvs_co_command)
     else:
@@ -178,6 +185,21 @@ def compile_and_install_sbcl(root_path):
     # install
     subprocess.check_call(["sudo", "sh", "./install.sh"])
     # remove sbcl if sbcl is installed by the package system
+
+def run_emacs_settings(root_path):
+    emacs_settings_path = os.path.join(root_path, "emacs-settings")
+    garaemon_url = 'http://garaemon.net/emacs-settings-repo/garaemon.el'
+    if os.path.exists(emacs_settings_path):
+        os.chdir(emacs_settings_path)
+        if not os.path.exists(os.path.abspath('~/.emacs')):
+            subprocess.check_call(['./emacs-settings', 'setup',
+                                   '> ~/.emacs'])
+        subprocess.check_call(['emacs-settings', 'add',
+                               garaemon_url])
+        subprocess.check_call(['emacs-settings', 'install',
+                               'garaemon-all-settings'])
+    else:
+        print "%s is not found" % emacs_settings_path
 
 def main(argv):
     """
@@ -201,6 +223,7 @@ def main(argv):
                            options.clone_as_developer)
     if not options.without_sbcl:
         compile_and_install_sbcl(root_path)
-
+    if not options.without_emacs_settings:
+        run_emacs_settings(root_path)
 main(sys.argv)
 
