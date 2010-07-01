@@ -18,4 +18,7 @@
       python-opencv
     darwin:
       python-opencv #??
+- python-imaging:
+    Ubuntu:
+      python-imaging
       
