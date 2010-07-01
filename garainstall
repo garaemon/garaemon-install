@@ -151,7 +151,7 @@ def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
         if os.path.exists(repo_path):
             prev_cd = os.getcwd()
             os.chdir(repo_path)
-            git_command = ['git', 'pull']
+            git_command = ['git', 'pull', 'origin']
             subprocess.check_call(git_command)
             os.chdir(prev_cd)
         else:
