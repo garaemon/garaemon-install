@@ -8,17 +8,20 @@ Options:
  --yes|-y (without invokating yes or no questions)
  --developer|-d (clone the repository as a developer. proper ssh
                  key is required)
- --without-install-packages (does not install any packages with apt or port)
- --without-clone-git (does not clone any git repository of garaemon)
+ --all|-a (alias option, equals --install-packages, --clone-git,
+           --sbcl, --emacs-settings)
+ --install-packages (install the packages by the package system os privodes)
+ --package-yaml=YAML_FILE (specify yaml file written the packages to be
+                           installed. in default, packages.yaml is used.)
+ --clone-git (clone any git repositories)
  --github-yaml=YAML_FILE (specify yaml file written the repositories to
                           be cloned from github.com. in default,
                           github.yaml is used)
- --without-sbcl (does not compile sbcl)
- --without-emacs-settings (does not run emacs-settings)
- --package-yaml=YAML_FILE (specify yaml file written the packages to be
-                           installed. in default, packages.yaml is used.)
- 
+ --sbcl (update and compile sbcl)
+ --emacs-settings (run emacs-settings, you need to install emacs-settings
+                   before)
 """
+
 from optparse import OptionParser, OptionValueError
 import os
 import sys
@@ -63,25 +66,26 @@ def setup_parser(parser):
                       default = False,
                       help = "clone garaemon-install repository as committer",
                       action = "store_true")
-    parser.add_option("--without-install-packages",
-                      dest = "without_install_packages",
+    parser.add_option("--install-packages",
+                      dest = "install_packages",
                       default = False,
-                      help = "does not install any packages with apt or port",
+                      help = "install some packages with apt or port",
                       action = "store_true")
-    parser.add_option("--without-sbcl",
-                      dest = "without_sbcl",
+    parser.add_option("--sbcl",
+                      dest = "sbcl",
                       default = False,
-                      help = "does not compile sbcl",
+                      help = "update and compile sbcl",
                       action = "store_true")
-    parser.add_option("--without-clone-git",
-                      dest = "without_clone_git",
+    parser.add_option("--clone-git",
+                      dest = "clone_git",
                       default = False,
-                      help = "does not clone github repository of garaemon",
+                      help = """clone github repositories specified by
+                       --github-yaml""",
                       action = "store_true")
-    parser.add_option("--without-emacs-settings",
-                      dest = "without_emacs_settings",
+    parser.add_option("--emacs-settings",
+                      dest = "emacs_settings",
                       default = False,
-                      help = "does not run emacs-settings",
+                      help = "run emacs-settings",
                       action = "store_true")
     parser.add_option("--package-yaml",
                       dest = "package_yaml",
@@ -95,6 +99,11 @@ def setup_parser(parser):
                       help = """specify yaml file the package to be cloned
                       is written""",
                       action = "store")
+    parser.add_option("--all", "-a", dest = "all",
+                      default = False,
+                      help = """equals --install-packages, --clone-git,
+                      --sbcl, --emacs-settings""",
+                      action = "store_true")
     return parser
 
 
@@ -215,15 +224,21 @@ def main(argv):
     setup_parser(parser)
     (options, args) = parser.parse_args(args)
     root_path = os.path.abspath(args[0])
-    if not options.without_install_packages:
+    if options.all:
+        options.install_packages = True
+        options.clone_git = True
+        options.sbcl = True
+        options.emacs_settings = True
+    if options.install_packages:
         install_packages_from_yaml(options.without_query_yes_no,
                                    options.package_yaml)
-    if not options.without_clone_git:
+    if options.clone_git:
         clone_github_repos(root_path, options.github_yaml,
                            options.clone_as_developer)
-    if not options.without_sbcl:
+    if options.sbcl:
         compile_and_install_sbcl(root_path)
-    if not options.without_emacs_settings:
+    if options.emacs_settings:
         run_emacs_settings(root_path)
+        
 main(sys.argv)
 
