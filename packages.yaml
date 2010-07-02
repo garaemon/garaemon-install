@@ -19,4 +19,7 @@
 - python-imaging:
     Ubuntu:
       python-imaging
+- wxpython:
+    darwin:
+      py-wxpython
       
