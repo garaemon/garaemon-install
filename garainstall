@@ -112,8 +112,8 @@ def extract_packages(yaml_file, arch):
     returns the packages according to arch from yaml_file.
     """
     packages = yaml.load(open(yaml_file).read())
-    arch_packages = map(lambda p: p[p.keys()[0]][arch], packages)
-    
+    arch_packages = [p[p.keys()[0]][arch] for p in packages
+                     if p[p.keys()[0]].has_key(arch)]
     print ">> installing %s" % arch_packages
     return arch_packages
 
