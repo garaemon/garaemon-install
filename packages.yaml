@@ -22,3 +22,8 @@
 - wxpython:
     darwin:
       py-wxpython
+- conky:
+    Ubuntu:
+      conky
+      
+
