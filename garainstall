@@ -20,6 +20,7 @@ Options:
  --sbcl (update and compile sbcl)
  --emacs-settings (run emacs-settings, you need to install emacs-settings
                    before)
+ --nerdtool (download nerdtool and copy to /Application directory)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -104,6 +105,10 @@ def setup_parser(parser):
                       help = """equals --install-packages, --clone-git,
                       --sbcl, --emacs-settings""",
                       action = "store_true")
+    parser.add_option("--nerdtool", dest = "nerdtool",
+                      default = False,
+                      help = """download nerdtool and copy it to /Application""",
+                      action = "store_true")
     return parser
 
 
@@ -137,6 +142,22 @@ def install_packages_from_yaml(without_query_yes_no, package_yaml):
     arch = detect_os()
     install_packages(without_query_yes_no, extract_packages(package_yaml, arch))
     
+def install_nerdtool(root_path):
+    download_path = os.path.join("/tmp")
+    url = "http://cloud.github.com/downloads/balthamos/geektool-3/NerdTool_0.8.zip"
+    fname = os.path.basename(url)
+    directory_name = os.path.splitext(fname)[0]
+    if detect_os() == "darwin":
+        print ">> installing NerdTool"
+        os.chdir(download_path)
+        subprocess.check_call(["wget", "-N", url])
+        subprocess.check_call(["unzip", fname])
+        subprocess.check_call(["cp", "-r",
+                               os.path.join(directory_name, "NerdTool.app"),
+                               "/Applications"])
+    else:
+        raise Exception, "only darwin is supported"
+
 def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
     repos = yaml.load(open(yaml_file).read())
     print ">> cloning %s" % [r['repository']['name'] for r in repos]
@@ -239,6 +260,8 @@ def main(argv):
         compile_and_install_sbcl(root_path)
     if options.emacs_settings:
         run_emacs_settings(root_path)
+    if options.nerdtool:
+        install_nerdtool(root_path)
         
 main(sys.argv)
 
