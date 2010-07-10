@@ -21,6 +21,7 @@ Options:
  --emacs-settings (run emacs-settings, you need to install emacs-settings
                    before)
  --nerdtool (download nerdtool and copy to /Application directory)
+ --conky-colors (download conky-colors and setup conkyrc)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -109,6 +110,11 @@ def setup_parser(parser):
                       default = False,
                       help = """download nerdtool and copy it to /Application""",
                       action = "store_true")
+    parser.add_option("--conky-colors", dest="conky_color",
+                      default = False,
+                      help = """download conky-colors and run it to generate
+                      ~/.conkyrc""",
+                      action = "store_true")
     return parser
 
 
@@ -157,6 +163,22 @@ def install_nerdtool(root_path):
                                "/Applications"])
     else:
         raise Exception, "only darwin is supported"
+def setup_conky_color():
+    download_path = os.path.join("/tmp")
+    url = "http://gnome-look.org/CONTENT/content-files/92328-conky_colors.tar.gz"
+    fname = os.path.basename(url)
+    directory_name = os.path.splitext(fname)[0]
+    if detect_os() == "Ubuntu":
+        print ">> installing conky-colors"
+        os.chdir(download_path)
+        subprocess.check_call(["wget", "-N", url])
+        subprocess.check_call(["tar", "xvzf", fname])
+        os.chdir(os.path.join(download_path, "conky_colors"))
+        subprocess.check_call(["make"])
+        subprocess.check_call(["./conky-colors", "--network",
+                              "--todo" ,"--calender" ,"--proc=5", "--cpu=8"])
+        subprocess.check_call(["make", "install"])
+        
 
 def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
     repos = yaml.load(open(yaml_file).read())
@@ -262,6 +284,8 @@ def main(argv):
         run_emacs_settings(root_path)
     if options.nerdtool:
         install_nerdtool(root_path)
+    if options.conky_color:
+        setup_conky_color()
         
 main(sys.argv)
 
