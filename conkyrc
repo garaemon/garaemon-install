@@ -42,6 +42,9 @@ TEXT
 # horizontal line
 ${font Liberation Sans:style=Bold:size=10}$nodename $stippled_hr${font}
 ${alignr}${font Liberation Sans:style=Bold:size=10}$kernel${font}
+# Create a file called ToDo.txt in your home
+${voffset 4}${font Liberation Sans:style=Bold:size=8}TO DO $stippled_hr${font}
+${voffset 4}${execpi 20 cat ~/.todo | sed -n '1,12p' | sed 's/^/${voffset -6}${color0}${font Poky:size=14}A${font}${color}${voffset -3}${goto 32}/'}
 # CLOCK #
 ${voffset 4}${font Liberation Sans:style=Bold:size=8}DATE $stippled_hr${font}
 ${voffset -14}${alignc 46}${color2}${font Arial Black:size=30}${time %H:%M}${font}${color}
@@ -172,7 +175,4 @@ ${endif}${else}${voffset 4}${font PizzaDude Bullets:size=12}4${font}${goto 32}Ne
 ${font Liberation Sans:style=Bold:size=8}DISK $stippled_hr${font}
 ${goto 3}${voffset 4}${font Poky:size=16}H${font}${goto 29}${voffset -11} Root: ${fs_used_perc /}%${alignr}${fs_size /}
 ${goto 29} Free: ${fs_free /}${alignr}${fs_bar 8,60 /}
-
-
-
 
