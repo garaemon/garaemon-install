@@ -26,4 +26,55 @@
     Ubuntu:
       conky
       
+- build-essential:
+    Ubuntu:
+      build-essential
+- subversion:
+    Ubuntu:
+      subversion
+    darwin:
+      subversion
 
+- checkinstall:
+    Ubuntu:
+      checkinstall
+- yasm:
+    Ubuntu:
+      yasm
+- texi2html:
+    Ubuntu:
+      texi2html
+- libfaac-dev:
+    Ubuntu:
+      libfaac-dev
+- libmp3lame-dev:
+    Ubuntu:
+      libmp3lame-dev
+- libopencore-amrnb-dev:
+    Ubuntu:
+      libopencore-amrnb-dev
+- libopencore-amrwb-dev:
+    Ubuntu:
+      libopencore-amrwb-dev
+- libsdl1.2-dev:
+    Ubuntu:
+      libsdl1.2-dev
+- libtheora-dev:
+    Ubuntu:
+      libtheora-dev
+- libvorbis-dev:
+    Ubuntu:
+      libvorbis-dev
+- libx11-dev:
+    Ubuntu:
+      libx11-dev
+- libxfixes-dev:
+    Ubuntu:
+      libxfixes-dev
+- libxvidcore-dev:
+    Ubuntu:
+      libxvidcore-dev
+- zlib1g-dev:
+    Ubuntu:
+      zlib1g-dev
+      

@@ -22,6 +22,7 @@ Options:
                    before)
  --nerdtool (download nerdtool and copy to /Application directory)
  --conky-colors (download conky-colors and setup conkyrc)
+ --ffmpeg (download and build ffmpeg)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -110,10 +111,15 @@ def setup_parser(parser):
                       default = False,
                       help = """download nerdtool and copy it to /Application""",
                       action = "store_true")
-    parser.add_option("--conky-colors", dest="conky_color",
+    parser.add_option("--conky-colors", dest = "conky_color",
                       default = False,
                       help = """download conky-colors and run it to generate
                       ~/.conkyrc""",
+                      action = "store_true")
+    parser.add_option("--ffmpeg", dest = "ffmpeg",
+                      default = False,
+                      help = """ download the source code of ffmpeg and
+                      build it.""",
                       action = "store_true")
     return parser
 
@@ -253,6 +259,83 @@ def run_emacs_settings(root_path):
     else:
         print "%s is not found" % emacs_settings_path
 
+def install_ffmpeg(root):
+    "see http://ubuntuforums.org/showthread.php?t=786095"
+    arch = detect_os()
+    if not arch == "Ubuntu":
+        raise Exception, "only Ubuntu is supported"
+    ffmpeg_dir = os.path.join(root, "ffmpeg")
+    if not os.path.exists(ffmpeg_dir):
+        os.mkdir(ffmpeg_dir)
+    os.chdir(ffmpeg_dir)
+    install_ffmpeg_setup_apt()
+    install_ffmpeg_x264(ffmpeg_dir)
+    install_ffmpeg_libvpx(ffmpeg_dir)
+    install_ffmpeg_ffmpeg(ffmpeg_dir)
+
+def install_ffmpeg_setup_apt():
+    subprocess.check_call(["sudo", "aptitude", "remove", "ffmpeg",
+                           "x264", "libx264-dev"])
+
+# TODO: need some abstraction...
+def install_ffmpeg_x264(root):
+    x264_dir = os.path.join(root, "x264")
+    if os.path.exists(x264_dir):
+        os.chdir(x264_dir)
+        subprocess.check_call(["git", "pull"])
+    else:
+        os.chdir(root)
+        subprocess.check_call(["git", "clone",
+                               "git://git.videolan.org/x264.git"])
+        os.chdir(x264_dir)
+    subprocess.check_call(["./configure"])
+    subprocess.check_call(["make"])
+    subprocess.check_call(["sudo", "make", "install"])
+
+def install_ffmpeg_libvpx(root):
+    libvpx_dir = os.path.join(root, "libvpx")
+    if os.path.exists(libvpx_dir):
+        os.chdir(libvpx_dir)
+        subprocess.check_call(["git", "pull"])
+    else:
+        os.chdir(root)
+        subprocess.check_call(["git", "clone",
+                               "git://review.webmproject.org/libvpx.git"])
+        os.chdir(libvpx_dir)
+    subprocess.check_call(["./configure"])
+    subprocess.check_call(["make"])
+    subprocess.check_call(["sudo", "make", "install"])
+    
+def install_ffmpeg_ffmpeg(root):
+    ffmpeg_dir = os.path.join(root, "ffmpeg")
+    if os.path.exists(ffmpeg_dir):
+        os.chdir(ffmpeg_dir)
+        subprocess.check_call(["svn", "up"])
+    else:
+        os.chdir(root)
+        subprocess.check_call(["svn", "co",
+                               "svn://svn.ffmpeg.org/ffmpeg/trunk",
+                               "ffmpeg"])
+        os.chdir(ffmpeg_dir)
+    subprocess.check_call(["./configure", "--enable-gpl",
+                           "--enable-version3",
+                           "--enable-nonfree",
+                           "--enable-postproc",
+                           "--enable-pthreads",
+                           "--enable-libfaac",
+                           "--enable-libmp3lame",
+                           "--enable-libopencore-amrnb",
+                           "--enable-libopencore-amrwb",
+                           "--enable-libtheora",
+                           "--enable-libvorbis",
+                           "--enable-libvpx",
+                           "--enable-libx264",
+                           "--enable-libxvid",
+                           "--enable-x11grab"])
+    subprocess.check_call(["make"])
+    subprocess.check_call(["sudo", "make", "install"])
+
+    
 def main(argv):
     """
     main function.
@@ -286,6 +369,7 @@ def main(argv):
         install_nerdtool(root_path)
     if options.conky_color:
         setup_conky_color()
-        
+    if options.ffmpeg:
+        install_ffmpeg(root_path)
 main(sys.argv)
 
