@@ -4,4 +4,6 @@
 - repository:
    name: scan-scripts
    location: garaemon/scan-scripts.git
-   
+- repository:
+   name: nico-downloader
+   location: garaemon/nico-downloader
