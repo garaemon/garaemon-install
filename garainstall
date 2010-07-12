@@ -172,7 +172,7 @@ def setup_conky(root):
     if detect_os() == "Ubuntu":
         print ">> installing conky"
         shutil.copyfile(os.path.join(root, "garaemon-install", "conkyrc"),
-                        os.path.abspath("~/.conkyrc"))
+                        os.path.expanduser("~/.conkyrc"))
         
 
 def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
