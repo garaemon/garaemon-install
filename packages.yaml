@@ -25,7 +25,6 @@
 - conky:
     Ubuntu:
       conky
-      
 - build-essential:
     Ubuntu:
       build-essential
@@ -34,7 +33,6 @@
       subversion
     darwin:
       subversion
-
 - checkinstall:
     Ubuntu:
       checkinstall
@@ -77,4 +75,4 @@
 - zlib1g-dev:
     Ubuntu:
       zlib1g-dev
-      
+ 
