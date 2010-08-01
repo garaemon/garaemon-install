@@ -23,6 +23,7 @@ Options:
  --nerdtool (download nerdtool and copy to /Application directory)
  --conky (copy conkyrc to $HOME/.conkyrc)
  --ffmpeg (download and build ffmpeg)
+ --chrome (open the download page of chrome)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -48,7 +49,20 @@ def detect_os():
     elif os.path.exists("/usr/bin/lsb_release"):
         return "Ubuntu"
     else:
-        raise
+        raise Exception("un supported architecture")
+
+def open_command():
+    arch = detect_os()
+    if arch == "darwin":
+        return "open"
+    elif arch == "Ubuntu":
+        return "gnome-open"
+    else:
+        raise Exception("unsupported %s" % arch)
+
+def open_arg(arg):
+    command = open_command()
+    subprocess.check_call([command, arg])
 
 def usage():
     """
@@ -119,6 +133,10 @@ def setup_parser(parser):
                       default = False,
                       help = """ download the source code of ffmpeg and
                       build it.""",
+                      action = "store_true")
+    parser.add_option("--chrome", dest = "chrome",
+                      default = False,
+                      help = "open the download page of chrome",
                       action = "store_true")
     return parser
 
@@ -324,6 +342,13 @@ def install_ffmpeg_ffmpeg(root):
     subprocess.check_call(["make"])
     subprocess.check_call(["sudo", "make", "install"])
 
+def open_chrome_page():
+    arch = detect_os()
+    if arch == "Ubuntu":
+        command = "firefox"
+    else:
+        raise Exception("unsupported architecture %s" % arch)
+    subprocess.check_call([command, "http://www.google.co.jp/chrome"])
     
 def main(argv):
     """
@@ -360,5 +385,7 @@ def main(argv):
         setup_conky(root_path)
     if options.ffmpeg:
         install_ffmpeg(root_path)
+    if options.chrome:
+        open_chrome_page()
 main(sys.argv)
 
