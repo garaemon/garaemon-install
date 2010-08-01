@@ -21,11 +21,10 @@
       python-imaging
 - wxpython:
     darwin:
-      py-wxpython
+      py26-wxpython
 - conky:
     Ubuntu:
       conky
-      
 - build-essential:
     Ubuntu:
       build-essential
@@ -34,7 +33,6 @@
       subversion
     darwin:
       subversion
-
 - checkinstall:
     Ubuntu:
       checkinstall
