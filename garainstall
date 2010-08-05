@@ -24,6 +24,7 @@ Options:
  --conky (copy conkyrc to $HOME/.conkyrc)
  --ffmpeg (download and build ffmpeg)
  --chrome (open the download page of chrome)
+ --dropbox (open the download page of Dropbox)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -137,6 +138,10 @@ def setup_parser(parser):
     parser.add_option("--chrome", dest = "chrome",
                       default = False,
                       help = "open the download page of chrome",
+                      action = "store_true")
+    parser.add_option("--dropbox", dest = "dropbox",
+                      default = False,
+                      help = "open the download page of Dropbox",
                       action = "store_true")
     return parser
 
@@ -349,6 +354,15 @@ def open_chrome_page():
     else:
         raise Exception("unsupported architecture %s" % arch)
     subprocess.check_call([command, "http://www.google.co.jp/chrome"])
+
+def open_dropbox_page():
+    arch = detect_os()
+    if arch == "Ubuntu":
+        command = "firefox"
+    else:
+        raise Exception("unsupported architecture %s" % arch)
+    subprocess.check_call([command, "http://www.dropbox.com"])
+
     
 def main(argv):
     """
@@ -387,5 +401,7 @@ def main(argv):
         install_ffmpeg(root_path)
     if options.chrome:
         open_chrome_page()
+    if options.dropbox:
+        open_dropbox_page()
 main(sys.argv)
 
