@@ -163,6 +163,7 @@ def install_packages(without_query_yes_no, packages):
         # add PPA testers
         subprocess.check_call(["sudo", "add-apt-repository",
                                "ppa:japanese-testers/ppa"])
+        subprocess.check_call(["sudo", "aptitude", "update"])
     elif arch == "darwin":
         apt_command = "port"
     commands = ["sudo", apt_command, "install"]
