@@ -160,6 +160,9 @@ def install_packages(without_query_yes_no, packages):
     arch = detect_os()
     if arch == "Ubuntu":
         apt_command = "aptitude"
+        # add PPA testers
+        subprocess.check_call(["sudo", "add-apt-repository",
+                               "ppa:japanese-testers/ppa"])
     elif arch == "darwin":
         apt_command = "port"
     commands = ["sudo", apt_command, "install"]

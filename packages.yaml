@@ -3,13 +3,13 @@
       clisp
     darwin:
       clisp
-- cvs
+- cvs:
     Ubuntu:
-     cvs
-- svn
+      cvs
+- svn:
     Ubuntu:
      subversion
-- makeinfo
+- makeinfo:
     Ubuntu:
      texinfo
 - git:
@@ -84,4 +84,9 @@
 - zlib1g-dev:
     Ubuntu:
       zlib1g-dev
- 
+- mozc:
+    Ubuntu:
+      mozc 
+- anthy-el:
+    Ubuntu:
+      anhty-el
