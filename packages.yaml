@@ -3,6 +3,15 @@
       clisp
     darwin:
       clisp
+- cvs
+    Ubuntu:
+     cvs
+- svn
+    Ubuntu:
+     subversion
+- makeinfo
+    Ubuntu:
+     texinfo
 - git:
     Ubuntu:
       git-core
