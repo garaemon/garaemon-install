@@ -259,9 +259,9 @@ def run_emacs_settings(root_path):
         if not os.path.exists(os.path.abspath('~/.emacs')):
             subprocess.check_call(['./emacs-settings', 'setup',
                                    '> ~/.emacs'])
-        subprocess.check_call(['emacs-settings', 'add',
+        subprocess.check_call(['./emacs-settings', 'add',
                                garaemon_url])
-        subprocess.check_call(['emacs-settings', '-d', 'install',
+        subprocess.check_call(['./emacs-settings', '-d', 'install',
                                'garaemon-all-settings'])
     else:
         print "%s is not found" % emacs_settings_path
