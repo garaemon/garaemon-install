@@ -1,0 +1,2 @@
+# -*- mode: shell-script -*-
+alias emacs='XMODIFIERS=@im=none emacs'
