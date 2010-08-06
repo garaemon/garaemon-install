@@ -86,7 +86,12 @@
       zlib1g-dev
 - mozc:
     Ubuntu:
-      mozc 
+      ibus-mozc
 - anthy-el:
     Ubuntu:
       anhty-el
+- ipython:
+    Ubuntu:
+      ipython
+    darwin:
+      ipython
