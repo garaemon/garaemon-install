@@ -6,6 +6,9 @@
 - ssh:
     Ubuntu:
       ssh
+- zsh:
+    Ubuntu:
+      zsh
 - cvs:
     Ubuntu:
       cvs
