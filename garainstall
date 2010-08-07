@@ -26,6 +26,10 @@ Options:
  --chrome (open the download page of chrome)
  --dropbox (open the download page of Dropbox)
  --setup-shell-rcfile (copy skelton bashrc and zshrc to the home directory)
+ --gnome-conf (setup gnome configuration. in only Ubuntu avaiable)
+ --gnome-conf-yaml=YAML_FILE (specify yaml file which gnome configuration
+                              are described. in default, gnome-conf.yaml
+                              is used)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -149,6 +153,15 @@ def setup_parser(parser):
                       help = """copy bashrc and
                       zshrc files to you home directory""",
                       action = "store_true")
+    parser.add_option("--gnome-conf", dest = "gnome_conf",
+                      default = False,
+                      help = """setup gnome configuration""",
+                      action = "store_true")
+    parser.add_option("--gnome-conf-yaml",
+                      dest = "gnome_conf_yaml",
+                      default = os.path.join(pwd, "gnome-conf.yaml"),
+                      help = """specify yaml file""",
+                      action = "store")
     return parser
 
 
@@ -384,6 +397,20 @@ def setup_shellrcfile():
         to_path = os.path.join(os.environ["HOME"], "." + f)
         print "%s -> %s" % (from_path, to_path)
         shutil.copyfile(from_path, to_path)
+        
+def setup_gnome_conf(yaml_file):
+    configs = yaml.load(open(yaml_file).read())
+    for config in [c['config'] for c in configs]:
+        gnome_path = config['path']
+        gnome_type = config['type']
+        gnome_value = config['value']
+        cmd = ["gconftool-2",
+               "--type", gnome_type,
+               "--set", gnome_path, gnome_value]
+        print "now setting gnome " + config['name']
+        print cmd
+        subprocess.check_call(cmd)
+        
     
 def main(argv):
     """
@@ -429,6 +456,7 @@ def main(argv):
         open_dropbox_page()
     if options.setup_shell_rcfile:
         setup_shellrcfile()
-    
+    if options.gnome_conf:
+        setup_gnome_conf(options.gnome_conf_yaml)
 main(sys.argv)
 
