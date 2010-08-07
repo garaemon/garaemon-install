@@ -13,5 +13,9 @@
     path: /apps/gnome-power-manager/lock/suspend
     type: bool
     value: "false"
-
+- config:
+    name: no lock in screensaver
+    path: /apps/gnome-screensaver/lock_enabled
+    type: bool
+    value: "false"
     

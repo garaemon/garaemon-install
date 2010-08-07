@@ -408,7 +408,6 @@ def setup_gnome_conf(yaml_file):
                "--type", gnome_type,
                "--set", gnome_path, gnome_value]
         print "now setting gnome " + config['name']
-        print cmd
         subprocess.check_call(cmd)
         
     
