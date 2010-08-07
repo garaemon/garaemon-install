@@ -398,7 +398,10 @@ def main(argv):
     parser = OptionParser()
     setup_parser(parser)
     (options, args) = parser.parse_args(args)
-    root_path = os.path.abspath(args[0])
+    if len(args) > 0:
+        root_path = os.path.abspath(args[0])
+    else:
+        root_path = False
     if options.all:
         options.install_packages = True
         options.clone_git = True
@@ -426,5 +429,6 @@ def main(argv):
         open_dropbox_page()
     if options.setup_shell_rcfile:
         setup_shellrcfile()
+    
 main(sys.argv)
 
