@@ -101,3 +101,6 @@
       ipython
     darwin:
       ipython
+- gpointing-device-settings
+    Ubuntu:
+      gpointing-device-settings
