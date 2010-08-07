@@ -3,7 +3,11 @@
 
 # If not running interactively, don't do anything
 #[ -z "$PS1" ] && return
-
+if [ -z "$PS1" ]; then
+    echo "not interactive"
+else
+    echo "interactive"
+fi
 # append to the history file, don't overwrite it
 shopt -s histappend
 
@@ -26,6 +30,7 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
+# prompt
 GREEN='\[\033[1;32m\]'
 YELLOW='\[\033[1;33m\]'
 BLUE='\[\033[1;34m\]'

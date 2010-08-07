@@ -25,6 +25,7 @@ Options:
  --ffmpeg (download and build ffmpeg)
  --chrome (open the download page of chrome)
  --dropbox (open the download page of Dropbox)
+ --setup-shell-rcfile (copy skelton bashrc and zshrc to the home directory)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -142,6 +143,11 @@ def setup_parser(parser):
     parser.add_option("--dropbox", dest = "dropbox",
                       default = False,
                       help = "open the download page of Dropbox",
+                      action = "store_true")
+    parser.add_option("--setup-shell-rcfile", dest = "setup_shell_rcfile",
+                      default = False,
+                      help = """copy bashrc and
+                      zshrc files to you home directory""",
                       action = "store_true")
     return parser
 
@@ -367,6 +373,16 @@ def open_dropbox_page():
         raise Exception("unsupported architecture %s" % arch)
     subprocess.check_call([command, "http://www.dropbox.com"])
 
+
+def setup_shellrcfile():
+    print ">> copying rc files"
+    rcdir = os.path.join(pwd, "dot-files")
+    rc_files = ["bashrc", "bashrc.linux", "zshrc", "zshrc.darwin"]
+    for f in rc_files:
+        from_path = os.path.join(rcdir, f)
+        to_path = os.path.join(os.environ["HOME"], "." + f)
+        print "%s -> %s" % (from_path, to_path)
+        shutil.copyfile(from_path, to_path)
     
 def main(argv):
     """
@@ -407,5 +423,7 @@ def main(argv):
         open_chrome_page()
     if options.dropbox:
         open_dropbox_page()
+    if options.setup_shell_rcfile:
+        setup_shellrcfile()
 main(sys.argv)
 
