@@ -52,6 +52,10 @@ if [ -x /usr/bin/dircolors ]; then
     alias grep='grep --color=auto'
 fi
 
+# aliases
+alias cp='cp -v'
+alias mv='mv -v'
+
 # you always need to cal init_ssh_agent when you want to activate ssh-agent
 init_ssh_agent () {
     eval `ssh-agent`
