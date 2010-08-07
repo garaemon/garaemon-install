@@ -18,4 +18,9 @@
     path: /apps/gnome-screensaver/lock_enabled
     type: bool
     value: "false"
+- config:
+    name: emacs keybind
+    path: /desktop/gnome/interface/gtk_key_theme
+    type: string
+    value: "Emacs"
     
