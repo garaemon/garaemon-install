@@ -167,11 +167,13 @@ fi
 
 # ros bashrc
 if [ -e $HOME/.bashrc.cturtle.ros ]; then
+    quiet_echo loading ros setup file ...
     source $HOME/.bashrc.cturtle.ros
 fi
 
 # customizing bashrc?
 if [ -e $HOME/.bashrc.mine ]; then
+    quiet_echo loading customizing setup file ...
     source $HOME/.bashrc.mine
 fi
 

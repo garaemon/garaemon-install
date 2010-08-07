@@ -154,11 +154,13 @@ fi
 
 # ros zshrc
 if [ -e $HOME/.zshrc.cturtle.ros ]; then
+    echo loading ros setup file ...
     source $HOME/.zshrc.cturtle.ros
 fi
 
 # customizing zshrc?
 if [ -e $HOME/.zshrc.mine ]; then
+    echo loading customizing setup file ...
     source $HOME/.zshrc.mine
 fi
 
