@@ -3,6 +3,9 @@
       clisp
     darwin:
       clisp
+- ssh:
+    Ubuntu:
+      ssh
 - cvs:
     Ubuntu:
       cvs
