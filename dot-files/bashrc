@@ -137,6 +137,9 @@ if [ -f /etc/bash_completion ]; then
     . /etc/bash_completion
 fi
 
+# PATH setup
+export PYTHONPATH=$PYTHONPATH:$HOME/gprog/scan-scripts
+export PATH=$PATH:$HOME/gprog/scan-scripts/bin
 # customize bashrc
 # if you have jsk bashrc, source it
 if [ -e $HOME/.bashrc.jsk ]; then
