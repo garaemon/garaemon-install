@@ -10,5 +10,5 @@ fi
 
 # for euslisp and ros
 if [ `which rospack` ]; then
-    export EUSDUR=`rospack find euslisp`/eus
+    export EUSDIR=`rospack find euslisp`/eus
 fi
