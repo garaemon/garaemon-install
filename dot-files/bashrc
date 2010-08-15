@@ -171,7 +171,9 @@ fi
 # ros bashrc
 if [ -e $HOME/.bashrc.cturtle.ros ]; then
     quiet_echo loading ros setup file ...
-    source $HOME/.bashrc.cturtle.ros
+    if [ -x `which rospack` ]; then
+        source $HOME/.bashrc.cturtle.ros
+    fi
 fi
 
 # customizing bashrc?
