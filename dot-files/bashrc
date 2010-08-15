@@ -140,11 +140,14 @@ fi
 # PATH setup
 export PYTHONPATH=$PYTHONPATH:$HOME/gprog/scan-scripts
 export PATH=$PATH:$HOME/gprog/scan-scripts/bin
+export PATH=$PATH:$HOME/gprog/emacs-settings
+
 # customize bashrc
 # if you have jsk bashrc, source it
 if [ -e $HOME/.bashrc.jsk ]; then
     source $HOME/.bashrc.jsk
 fi
+
 # os dependent files
 OS=`uname`
 if [ "$OS" = "CYGWIN_NT-5.1" -o "$OS" = "CYGWIN_NT-6.0" ] ; then

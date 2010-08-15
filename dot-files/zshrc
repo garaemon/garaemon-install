@@ -128,6 +128,8 @@ export DISPLAY
 # PATH setup
 export PYTHONPATH=$PYTHONPATH:$HOME/gprog/scan-scripts
 export PATH=$PATH:$HOME/gprog/scan-scripts/bin
+export PATH=$PATH:$HOME/gprog/emacs-settings
+
 if [ -e $HOME/.zshrc.jsk ]; then
     echo loading jsk setup file ...
     source $HOME/.zshrc.jsk
