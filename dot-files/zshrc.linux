@@ -2,7 +2,7 @@
 alias emacs='XMODIFIERS=@im=none emacs'
 
 # for euslisp
-if [ `uname -m` == i686 ]; then
+if [ `uname -m` = i686 ]; then
     export ARCHDIR=Linux
 else
     export ARCHDIR=Linux64
