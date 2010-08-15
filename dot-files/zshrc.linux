@@ -9,6 +9,8 @@ else
 fi
 
 # for euslisp and ros
-if [ `which rospack` ]; then
-    export EUSDIR=`rospack find euslisp`/eus
+if [ "`which rospack`" != "" ]; then
+    if [ -x "`which rospack`" ]; then
+        export EUSDIR=`rospack find euslisp`/eus
+    fi
 fi
