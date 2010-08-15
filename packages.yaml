@@ -104,3 +104,7 @@
 - gpointing-device-settings:
     Ubuntu:
       gpointing-device-settings
+- cairo-dock
+    Ubuntu:
+      cairo-dock
+      
