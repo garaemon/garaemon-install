@@ -1,2 +1,14 @@
 # -*- mode: shell-script -*-
 alias emacs='XMODIFIERS=@im=none emacs'
+
+# for euslisp
+if [ `uname -m` == i686 ]; then
+    export ARCHDIR=Linux
+else
+    export ARCHDIR=Linux64
+fi
+
+# for euslisp and ros
+if [ `which rospack` ]; then
+    export EUSDIR=`rospack find euslisp`/eus
+fi
