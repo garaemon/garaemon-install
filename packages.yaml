@@ -112,5 +112,5 @@
       wget
 - pil:
     darwin:
-      py-pil
+      py26-pil
       
