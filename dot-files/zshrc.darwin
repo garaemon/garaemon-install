@@ -1,8 +1,8 @@
 # -*- mode: shell-script -*-
-export PATH=$PATH:/usr/sbin
-#alias emacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs'
+alias emacs='/Applications/MacPorts/Emacs.app/Contents/MacOS/Emacs'
+alias ls='ls -G'
+
 #alias emacs24='/Applications/Emacs23.app/Contents/MacOS/Emacs'
-alias emacs='open -a /Applications/MacPorts/Emacs.app'
 
 # macports
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
