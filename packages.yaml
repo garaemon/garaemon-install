@@ -113,4 +113,7 @@
 - pil:
     darwin:
       py26-pil
+- pymacs:
+    darwin:
+      py26-pymacs
       
