@@ -110,3 +110,7 @@
 - wget:      
     darwin:
       wget
+- pil:
+    darwin:
+      py-pil
+      
