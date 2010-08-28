@@ -1,0 +1,7 @@
+- application:
+   name: chrome
+   location: http://www.google.co.jp/chrome/
+   architecture: [darwin, Ubuntu]
+   
+   
+     
