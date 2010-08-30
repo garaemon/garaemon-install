@@ -7,6 +7,8 @@ alias ls='ls -G'
 # macports
 export PATH=/opt/local/bin:/opt/local/sbin:$PATH
 export MANPATH=/opt/local/man:$MANPATH
+# parallel building in macports
+
 
 # x
 #export PATH=$PATH:/usr/X11R6/bin
