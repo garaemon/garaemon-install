@@ -18,6 +18,7 @@ Options:
                           be cloned from github.com. in default,
                           github.yaml is used)
  --sbcl (update and compile sbcl)
+ --clbuild (download clbuild)
  --emacs-settings (run emacs-settings, you need to install emacs-settings
                    before)
  --nerdtool (download nerdtool and copy to /Application directory)
@@ -167,6 +168,11 @@ def setup_parser(parser):
                       dest = "glc",
                       default = False,
                       help = """install glc""",
+                      action = "store_true")
+    parser.add_option("--clbuild",
+                      dest = "clbuild",
+                      default = False,
+                      help = """download clbuild""",
                       action = "store_true")
     return parser
 
@@ -416,8 +422,19 @@ def setup_gnome_conf(yaml_file):
         print "now setting gnome " + config['name']
         subprocess.check_call(cmd)
         
-def install_glc(root):
-    
+def install_clbuild(root):
+    darcs_root = "http://common-lisp.net/project/clbuild/clbuild"
+    clbuild_path = os.path.join(root, "clbuild")
+    if os.path.exists(clbuild_path):
+        prev_cd = os.getcwd()
+        os.chdir(clbuild_path)
+        subprocess.check_call(["darcs", "pull"])
+        os.chdir(prev_cd)
+    else:
+        prev_cd = os.getcwd()
+        os.chdir(root)
+        subprocess.check_call(["darcs", "get", darcs_root])
+        os.chdir(prev_cd)
     
 def main(argv):
     """
@@ -467,5 +484,7 @@ def main(argv):
         setup_gnome_conf(options.gnome_conf_yaml)
     if options.glc:
         install_glc(root_path)
+    if options.clbuild:
+        install_clbuild(root_path)
 main(sys.argv)
 
