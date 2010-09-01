@@ -30,6 +30,7 @@ Options:
  --gnome-conf-yaml=YAML_FILE (specify yaml file which gnome configuration
                               are described. in default, gnome-conf.yaml
                               is used)
+ --glc (install glc)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -162,6 +163,11 @@ def setup_parser(parser):
                       default = os.path.join(pwd, "gnome-conf.yaml"),
                       help = """specify yaml file""",
                       action = "store")
+    parser.add_option("--glc",
+                      dest = "glc",
+                      default = False,
+                      help = """install glc""",
+                      action = "store_true")
     return parser
 
 
@@ -410,6 +416,8 @@ def setup_gnome_conf(yaml_file):
         print "now setting gnome " + config['name']
         subprocess.check_call(cmd)
         
+def install_glc(root):
+    
     
 def main(argv):
     """
@@ -457,5 +465,7 @@ def main(argv):
         setup_shellrcfile()
     if options.gnome_conf:
         setup_gnome_conf(options.gnome_conf_yaml)
+    if options.glc:
+        install_glc(root_path)
 main(sys.argv)
 

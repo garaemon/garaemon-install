@@ -15,6 +15,11 @@
 - svn:
     Ubuntu:
      subversion
+- darcs:
+    Ubuntu:
+      darcs
+    darwin:
+      darcs
 - makeinfo:
     Ubuntu:
      texinfo
@@ -100,10 +105,22 @@
     Ubuntu:
       ipython
     darwin:
-      ipython
+      py-ipython
 - gpointing-device-settings:
     Ubuntu:
       gpointing-device-settings
-- cairo-dock
+- cairo-dock:
     Ubuntu:
       cairo-dock
+- wget:      
+    darwin:
+      wget
+- pil:
+    darwin:
+      py26-pil
+- pymacs:
+    darwin:
+      py26-pymacs
+- openscenegraph:
+    darwin:
+      OpenSceneGraph-devel
