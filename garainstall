@@ -434,6 +434,7 @@ def install_clbuild(root):
         prev_cd = os.getcwd()
         os.chdir(root)
         subprocess.check_call(["darcs", "get", darcs_root])
+        subprocess.check_call(["chmod", "+x", "clbuild/clbuild"])
         os.chdir(prev_cd)
     
 def main(argv):
