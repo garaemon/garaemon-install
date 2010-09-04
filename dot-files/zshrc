@@ -172,5 +172,3 @@ if [ -e $HOME/.zshrc.mine ]; then
     source $HOME/.zshrc.mine
 fi
 
-
-alias rm='trash-put -v'

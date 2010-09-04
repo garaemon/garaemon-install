@@ -16,3 +16,5 @@ if [ "`which rospack`" != "" ]; then
         export EUSDIR=`rospack find euslisp`/eus
     fi
 fi
+
+alias rm='trash-put -v'
