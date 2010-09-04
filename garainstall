@@ -436,7 +436,9 @@ def install_clbuild(root):
         subprocess.check_call(["darcs", "get", darcs_root])
         subprocess.check_call(["chmod", "+x", "clbuild/clbuild"])
         os.chdir(prev_cd)
-    
+    # update clbuild.conf and my-projects, my-dependencies
+    shutil.copyfile(os.path.join(pwd, "clbuild", "clbuild.conf"),
+                    os.path.join(root, "clbuild", "clbuild.conf"))
 def main(argv):
     """
     main function.
