@@ -18,3 +18,4 @@ if [ "`which rospack`" != "" ]; then
 fi
 
 alias rm='trash-put -v'
+alias ls="ls --color=auto"
