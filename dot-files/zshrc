@@ -161,9 +161,7 @@ fi
 # ros zshrc
 if [ -e $HOME/.zshrc.cturtle.ros ]; then
     echo loading ros setup file ...
-    if [ -x `which rospack` ]; then
-        source $HOME/.zshrc.cturtle.ros
-    fi
+    source $HOME/.zshrc.cturtle.ros
 fi
 
 # customizing zshrc?
