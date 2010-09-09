@@ -1,1 +1,5 @@
-cl-sphinx cl-fad colorize cl-closure-template
+cl-sphinx cl-fad colorize cl-closure-template cl-docutils
+colorize split-sequence html-encode
+cl-closure-template wiki-parser split-sequence babel
+wiki-parser cl-ppcre iterate alexandria
+cl-docutils cl-ppcre trivial-gray-streams cl-data-format-validation

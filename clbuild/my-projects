@@ -1,3 +1,7 @@
+# archimag github repo
 cl-sphinx get_git http://github.com/archimag/cl-sphinx.git
 cl-closure-template get_git http://github.com/archimag/cl-closure-template.git
 colorize get_svn svn://unmutual.info/colorize
+wiki-parser get_git http://github.com/archimag/wiki-parser.git
+cl-docutils get_git http://github.com/archimag/cl-docutils.git
+cl-data-format-validation get_git git://github.com/willijar/cl-data-format-validation.git
