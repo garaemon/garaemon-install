@@ -1,3 +1,6 @@
+# garaemon
+warashi get_garaemon_github garaemon/warashi.git
+
 # archimag github repo
 cl-sphinx get_git http://github.com/archimag/cl-sphinx.git
 cl-closure-template get_git http://github.com/archimag/cl-closure-template.git
