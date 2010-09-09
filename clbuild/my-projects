@@ -1,0 +1,3 @@
+cl-sphinx get_git http://github.com/archimag/cl-sphinx.git
+cl-closure-template get_git http://github.com/archimag/cl-closure-template.git
+colorize get_svn svn://unmutual.info/colorize

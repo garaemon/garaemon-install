@@ -439,6 +439,12 @@ def install_clbuild(root):
     # update clbuild.conf and my-projects, my-dependencies
     shutil.copyfile(os.path.join(pwd, "clbuild", "clbuild.conf"),
                     os.path.join(root, "clbuild", "clbuild.conf"))
+    shutil.copyfile(os.path.join(pwd, "clbuild", "my-projects"),
+                    os.path.join(root, "clbuild", "my-projects"))
+    shutil.copyfile(os.path.join(pwd, "clbuild", "my-dependencies"),
+                    os.path.join(root, "clbuild", "my-dependencies"))
+    return
+
 def main(argv):
     """
     main function.
