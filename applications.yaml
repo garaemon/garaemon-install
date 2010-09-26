@@ -6,3 +6,7 @@
    name: yorufukuro
    location: http://sites.google.com/site/yorufukurou/
    architecture: [darwin]
+- application:
+   name: dropbox
+   location: http://www.dropbox.com
+   architecture: [darwin, Ubuntu]
