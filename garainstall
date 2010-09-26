@@ -451,7 +451,6 @@ def open_applications(yaml_file):
                     if arch in config["application"]["architecture"]]
     applications_urls = [app["location"] for app in applications]
     open_url_by_browser(*applications_urls)
-    print applications_urls
 
 def main(argv):
     """
