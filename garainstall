@@ -24,7 +24,6 @@ Options:
  --nerdtool (download nerdtool and copy to /Application directory)
  --conky (copy conkyrc to $HOME/.conkyrc)
  --ffmpeg (download and build ffmpeg)
- --chrome (open the download page of chrome)
  --setup-shell-rcfile (copy skelton bashrc and zshrc to the home directory)
  --gnome-conf (setup gnome configuration. in only Ubuntu avaiable)
  --gnome-conf-yaml=YAML_FILE (specify yaml file which gnome configuration
@@ -145,10 +144,6 @@ def setup_parser(parser):
                       default = False,
                       help = """ download the source code of ffmpeg and
                       build it.""",
-                      action = "store_true")
-    parser.add_option("--chrome", dest = "chrome",
-                      default = False,
-                      help = "open the download page of chrome",
                       action = "store_true")
     parser.add_option("--setup-shell-rcfile", dest = "setup_shell_rcfile",
                       default = False,
@@ -392,9 +387,6 @@ def install_ffmpeg_ffmpeg(root):
     subprocess.check_call(["make"])
     subprocess.check_call(["sudo", "make", "install"])
 
-def open_chrome_page():
-    return open_url_by_browser("http://www.google.co.jp/chrome")
-
 def open_url_by_browser(*url):
     arch = detect_os()
     if arch == "Ubuntu":
@@ -499,8 +491,6 @@ def main(argv):
         setup_conky(root_path)
     if options.ffmpeg:
         install_ffmpeg(root_path)
-    if options.chrome:
-        open_chrome_page()
     if options.setup_shell_rcfile:
         setup_shellrcfile()
     if options.gnome_conf:
