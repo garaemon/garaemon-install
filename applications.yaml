@@ -10,3 +10,12 @@
    name: dropbox
    location: http://www.dropbox.com
    architecture: [darwin, Ubuntu]
+- application:
+   name: vlc
+   location: http://www.videolan.org/vlc/
+   architecture: [darwin]
+- application:
+   name: quicksilver
+   location: http://www.macupdate.com/info.php/id/14831/quicksilver
+   architecture: [darwin]
+   
