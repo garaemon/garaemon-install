@@ -4,6 +4,5 @@
    architecture: [darwin, Ubuntu]
 - application:
    name: yorufukuro
-   location: 
-   
-     
+   location: http://sites.google.com/site/yorufukurou/
+   architecture: [darwin]

@@ -32,6 +32,11 @@ Options:
                               are described. in default, gnome-conf.yaml
                               is used)
  --glc (install glc)
+ --applications (open the web pages of applications to install.
+                 the applications are specified by --applications-yaml option.)
+ --applications-yaml (specify yaml file which applications url
+                      are described. in default, applications.yaml
+                      is used)
 """
 
 from optparse import OptionParser, OptionValueError
@@ -174,6 +179,16 @@ def setup_parser(parser):
                       default = False,
                       help = """download clbuild""",
                       action = "store_true")
+    parser.add_option("--applications",
+                      dest = "applications",
+                      default = False,
+                      help = """open the pages of applications""",
+                      action = "store_true")
+    parser.add_option("--applications-yaml",
+                      dest = "applications_yaml",
+                      default = os.path.join(pwd, "applications.yaml"),
+                      help = """specify yaml file""",
+                      action = "store")
     return parser
 
 
@@ -383,21 +398,20 @@ def install_ffmpeg_ffmpeg(root):
     subprocess.check_call(["sudo", "make", "install"])
 
 def open_chrome_page():
-    arch = detect_os()
-    if arch == "Ubuntu":
-        command = "firefox"
-    else:
-        raise Exception("unsupported architecture %s" % arch)
-    subprocess.check_call([command, "http://www.google.co.jp/chrome"])
+    return open_url_by_browser("http://www.google.co.jp/chrome")
 
 def open_dropbox_page():
+    return open_url_by_browser("http://www.dropbox.com")
+
+def open_url_by_browser(*url):
     arch = detect_os()
     if arch == "Ubuntu":
         command = "firefox"
+    elif arch == "darwin":
+        command = "open"
     else:
         raise Exception("unsupported architecture %s" % arch)
-    subprocess.check_call([command, "http://www.dropbox.com"])
-
+    return subprocess.check_call([command]  + list(url))
 
 def setup_shellrcfile():
     print ">> copying rc files"
@@ -444,6 +458,16 @@ def install_clbuild(root):
     shutil.copyfile(os.path.join(pwd, "clbuild", "my-dependencies"),
                     os.path.join(root, "clbuild", "my-dependencies"))
     return
+
+def open_applications(yaml_file):
+    configs = yaml.load(open(yaml_file).read())
+    arch = detect_os()
+    applications = [config["application"]
+                    for config in configs
+                    if arch in config["application"]["architecture"]]
+    applications_urls = [app["location"] for app in applications]
+    open_url_by_browser(*applications_urls)
+    print applications_urls
 
 def main(argv):
     """
@@ -495,5 +519,10 @@ def main(argv):
         install_glc(root_path)
     if options.clbuild:
         install_clbuild(root_path)
-main(sys.argv)
+    if options.applications:
+        open_applications(options.applications_yaml)
+
+if __name__ == "__main__":
+    main(sys.argv)
+    
 
