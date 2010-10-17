@@ -256,41 +256,19 @@ def clone_github_repos(root_path, yaml_file, clone_as_developer_p):
 
 def compile_and_install_sbcl(root_path):
     print ">> installing sbcl"
-    sbcl_path = os.path.join(root_path, "sbcl")
-    # first of all, install binary sbcl
-    try:
-        check_sbcl = ['sbcl', '--version']
-        subprocess.check_call(check_sbcl)
-    except:
-        # install sbcl
-        install_packages(True, ["sbcl"])
-    # checking out
-    sbcl_url = "-d:pserver:anonymous@sbcl.cvs.sourceforge.net:/cvsroot/sbcl"
-    if not os.path.exists(sbcl_path):
-        os.chdir(root_path)
-        cvs_login_command = ["cvs", sbcl_url, "login"]
-        cvs_co_command = ["cvs", "-z3", sbcl_url, "co", "-P", "sbcl"]
-        subprocess.check_call(cvs_login_command)
-        subprocess.check_call(cvs_co_command)
-    else:
-        os.chdir(sbcl_path)
-        cvs_update_command = ["cvs", "up"]
-        subprocess.check_call(cvs_update_command)
-    # copy extention files...
-    sbcl_customize_feature = "customize-target-features.lisp"
-    if not os.path.exists(os.path.join(sbcl_path, sbcl_customize_feature)):
-        # copy
-        from_path = os.path.abspath(os.path.join(pwd,
-                                                 sbcl_customize_feature))
-        shutil.copyfile(from_path,
-                        os.path.join(sbcl_path, sbcl_customize_feature))
-    # build
-    os.chdir(sbcl_path)
-    subprocess.check_call(["sh", "./make.sh"])
-    # install
-    subprocess.check_call(["sudo", "sh", "./install.sh"])
-    # remove sbcl if sbcl is installed by the package system
-
+    clbuild_path = os.path.join(root_path, "clbuild")
+    if not os.path.exists(clbuild_path):
+        # does not have clbuild...
+        install_clbuild(root_path)
+        pass
+    prev_cd = os.getcwd()
+    os.chdir(clbuild_path)
+    update_cmds = ["clbuild", "update", "sbcl"]
+    compile_cmds = ["clbuild", "compile-implementation", "sbcl"]
+    subprocess.check_call(update_cmds)
+    subprocess.check_call(compile_cmds)
+    os.chdir(prev_cd)
+    
 def run_emacs_settings(root_path):
     emacs_settings_path = os.path.join(root_path, "emacs-settings")
     garaemon_url = 'http://garaemon.net/emacs-settings-repo/garaemon.el'
