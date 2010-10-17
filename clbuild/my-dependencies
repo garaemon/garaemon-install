@@ -1,5 +1,5 @@
 warashi cl-ppcre
-nurarihyon
+nurarihyon alexandria
 
 cl-sphinx cl-fad colorize cl-closure-template cl-docutils
 colorize split-sequence html-encode
