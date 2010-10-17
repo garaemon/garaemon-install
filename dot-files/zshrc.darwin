@@ -45,3 +45,5 @@ export PATH=/opt/local/bin:$PATH
 
 # for wx widgets
 export VERSIONER_PYTHON_PREFER_32_BIT=yes
+
+alias ipython="ipython-2.6"
