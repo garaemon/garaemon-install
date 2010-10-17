@@ -1,4 +1,6 @@
 warashi cl-ppcre
+nurarihyon
+
 cl-sphinx cl-fad colorize cl-closure-template cl-docutils
 colorize split-sequence html-encode
 cl-closure-template wiki-parser split-sequence babel

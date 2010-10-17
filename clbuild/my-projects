@@ -1,5 +1,6 @@
 # garaemon
 warashi get_garaemon_github garaemon/warashi.git
+nurarihyon get_garaemon_github garaemon/nurarihyon.git
 
 # archimag github repo
 cl-sphinx get_git http://github.com/archimag/cl-sphinx.git
