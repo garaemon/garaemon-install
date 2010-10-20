@@ -271,7 +271,11 @@ def compile_and_install_sbcl(root_path):
     update_cmds = ["clbuild", "update", "sbcl"]
     compile_cmds = ["clbuild", "compile-implementation", "sbcl"]
     subprocess.check_call(update_cmds)
-    subprocess.check_call(compile_cmds)
+    try:
+        subprocess.check_call(compile_cmds)
+    except Exception, e:
+        print "%s might be failed, passing" % (compile_cmds)
+        pass
     os.chdir(prev_cd)
     
 def run_emacs_settings(root_path):
