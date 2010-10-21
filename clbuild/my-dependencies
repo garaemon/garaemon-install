@@ -1,5 +1,6 @@
 warashi cl-ppcre
 nurarihyon alexandria
+komainu nurarihyon
 
 cl-sphinx cl-fad colorize cl-closure-template cl-docutils
 colorize split-sequence html-encode
