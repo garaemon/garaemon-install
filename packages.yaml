@@ -124,3 +124,10 @@
 - openscenegraph:
     darwin:
       OpenSceneGraph-devel
+- emacs:
+    darwin:
+      emacs-app
+- boost:
+    darwin:
+      boost
+

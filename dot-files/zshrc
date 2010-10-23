@@ -48,6 +48,7 @@ bindkey -e
 alias cp='cp -v'
 alias mv='mv -v'
 alias grep='grep --color=auto'
+alias sbcl="$HOME/gprog/clbuild/clbuild lisp"
 
 #ssh-agent
 # you always need to cal init_ssh_agent when you want to activate ssh-agent
