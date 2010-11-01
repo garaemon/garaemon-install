@@ -3,7 +3,7 @@ warashi get_garaemon_github garaemon/warashi.git
 nurarihyon get_garaemon_github garaemon/nurarihyon.git
 komainu get_garaemon_github garaemon/komainu.git
 
-lisp-unit get_git http://github.com/OdonataResearchLLC/lisp-unit
+lisp-unit get_git git://github.com/OdonataResearchLLC/lisp-unit.git
 
 
 # archimag github repo
