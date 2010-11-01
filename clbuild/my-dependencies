@@ -1,5 +1,5 @@
 warashi cl-ppcre
-nurarihyon alexandria
+nurarihyon alexandria lisp-unit
 komainu nurarihyon
 
 cl-sphinx cl-fad colorize cl-closure-template cl-docutils
