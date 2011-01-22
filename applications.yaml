@@ -22,3 +22,14 @@
    name: quicksilver
    location: http://www.macupdate.com/info.php/id/14831/quicksilver
    architecture: [darwin]
+
+- application:
+   name: witch
+   location: http://veadardiary.blog29.fc2.com/blog-entry-271.html
+   architecture: [darwin]
+
+- application:
+   name: keyremap4macbook
+   location: http://pqrs.org/macosx/keyremap4macbook/index.html.ja
+   architecture: [darwin]
+   
