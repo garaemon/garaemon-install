@@ -13,3 +13,5 @@ defencoding utf-8
 encoding utf-8 utf-8
 shell /bin/zsh
 
+caption always "%{= Wk}%110`%109`[%n]: [%-w%{=b Bw}%n %t%{-}%+w] %= %122`%111`"
+

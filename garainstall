@@ -397,11 +397,13 @@ def setup_shellrcfile():
     return
 
 def setup_screenrc():
-    print ">> copying screenrc"
-    rcdir = os.path.join(pwd, "dot-files")
-    screenrc = os.path.join(rcdir, "screenrc")
-    to_path = os.path.join(os.environ["HOME"], ".screenrc")
-    shutil.copyfile(screenrc, to_path)
+    print ">> generating screenrc"
+    path = os.path.join(os.environ["HOME"], ".screenrc")
+    f = open(path, "w")
+    f.write("""
+source %s/dot-files/screen/screenrc
+""" % (pwd))
+    f.close()
     return
 
 def setup_gnome_conf(yaml_file):
